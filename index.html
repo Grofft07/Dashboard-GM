@@ -153,7 +153,7 @@ tr[data-dr]{cursor:pointer}tr[data-dr]:hover td{background:var(--panel-2)}.sli.c
 /* === LOGIN EMAIL + PIN — ISI BARIS INI === */
 window.DASH_URL='https://script.google.com/macros/s/AKfycbzd-5Y_Tm7KYYFu_Mge4azbWZRL7yrhPV6GKdqi590XLfXXnPIIHaVY2IdF7_lXxwph-A/exec';   // URL Apps Script /exec (WAJIB, supaya login bisa diverifikasi server)
 /* ========================================= */
-var TOKEN='';try{TOKEN=sessionStorage.getItem('gtok')||''}catch(e){}
+var TOKEN='https://script.google.com/macros/s/AKfycbzd-5Y_Tm7KYYFu_Mge4azbWZRL7yrhPV6GKdqi590XLfXXnPIIHaVY2IdF7_lXxwph-A/exec';try{TOKEN=sessionStorage.getItem('gtok')||''}catch(e){}
 function showGate(msg){
   var g=document.getElementById('gate');
   if(!g){g=document.createElement('div');g.id='gate';g.style.cssText='position:fixed;inset:0;z-index:99999;background:var(--bg,#0F1115);color:var(--text,#E7E9EE);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center;font-family:Inter,system-ui,sans-serif';
@@ -905,6 +905,222 @@ function exec(){const pg=$('#p-eksekutif');if(!pg)return;const f=F(),len=nd(f.a,
 const ra=window.renderAll;window.renderAll=function(...a){const r=ra.apply(this,a);try{exec()}catch(e){console.error(e)}return r};
 applyGM();if(S.url&&u)pull(true);
 renderAll();if(GM){const on=document.querySelector('.page.on');if(GMURL||!on||on.id==='p-overview')goPage('eksekutif')}
+})();
+</script>
+<style id="theme-v3">
+/* ===== TEMA NYAMAN v3 — hanya tampilan, logika tidak diubah ===== */
+:root{
+  --bg:#0E141B;--panel:#151D27;--panel-2:#1B2531;--line:#27323F;--text:#E8EDF3;--muted:#93A1B3;
+  --green:#34D399;--greendark:#0F766E;--yellow:#FBBF24;--red:#F87171;--blue:#60A5FA;--purple:#A78BFA;
+  --kpi:linear-gradient(135deg,#0F4C45 0%,#14796B 100%);
+  --radius:12px;--sh:0 1px 2px rgba(0,0,0,.25),0 6px 18px -8px rgba(0,0,0,.45);color-scheme:dark}
+:root[data-theme=light]{
+  --bg:#F3F6F9;--panel:#FFFFFF;--panel-2:#F0F4F8;--line:#E1E8EF;--text:#1B2733;--muted:#64748B;
+  --green:#059669;--greendark:#0F766E;--yellow:#B45309;--red:#DC2626;--blue:#2563EB;--purple:#7C3AED;
+  --kpi:linear-gradient(135deg,#0F766E 0%,#10A37F 100%);
+  --sh:0 1px 2px rgba(15,23,42,.05),0 8px 22px -12px rgba(15,23,42,.14);color-scheme:light}
+body{font-size:14.5px;line-height:1.65;letter-spacing:.005em}
+.main{padding:26px 34px 60px}
+h1{font-size:21px;font-weight:700;letter-spacing:-.01em}
+h2{font-size:16px;font-weight:700;margin:32px 0 14px}
+h2::before{width:3px;height:15px}
+/* kartu */
+.card,.kpi2,.ac,.ts,.top,.phead,.ov-tabs,.seg,.hseg{box-shadow:var(--sh)}
+.card{border-radius:14px;padding:18px 20px}
+.kpi{border-radius:14px;padding:18px 20px;box-shadow:0 10px 24px -14px rgba(15,118,110,.6)}
+.kpi .l{font-size:11.5px;opacity:.85}
+.kpi .v{font-size:27px;letter-spacing:-.01em}
+.kpi .s{opacity:.85;line-height:1.5}
+.kpi2{border-radius:14px;padding:16px 18px;border-left-width:3px}
+.kpi2 .v{font-size:20px;letter-spacing:-.01em}
+.kpi:hover,.kpi2:hover{transform:translateY(-1px)}
+.grid{gap:16px}.g5{margin-top:16px}
+/* bar atas */
+.gfwrap{padding:2px 0 12px;background:linear-gradient(var(--bg) 80%,transparent)}
+.top{border-radius:14px;padding:12px 16px}
+.bar select,.bar input[type=date]{height:38px;border-radius:10px}
+select{cursor:pointer}
+.dr-btn{border-width:1px;border-color:var(--line);background:var(--panel-2);border-radius:10px;height:38px}
+.dr-btn:hover{border-color:var(--green)}
+.sq{border-radius:10px}
+.theme-toggle{border-radius:10px;padding:3px;gap:2px}
+.theme-toggle button{width:32px;height:30px;border-radius:8px;transition:background .15s,color .15s}
+.theme-toggle button:hover:not(.active){background:var(--panel);color:var(--text)}
+.theme-toggle button.active{background:var(--green);color:#fff}
+:root:not([data-theme=light]) .theme-toggle button.active{color:#06241D}
+/* sidebar */
+.sidebar{background:var(--panel);border-right:1px solid var(--line);padding:22px 14px}
+.brand span{font-size:15px;letter-spacing:.06em}
+.brand .dot{box-shadow:0 0 0 4px color-mix(in srgb,var(--green) 18%,transparent)}
+.nav{padding:10px 12px;border-radius:10px;font-size:14px}
+.nav.on{background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green);border-color:transparent;box-shadow:none;font-weight:600}
+.nav.on::before{background:var(--green)}
+:root[data-theme=light] .nav.on{color:var(--greendark);background:color-mix(in srgb,var(--green) 12%,#fff)}
+.nav-group-head{font-size:10.5px;letter-spacing:.1em}
+/* tab */
+.ov-tabs{border-radius:12px;padding:5px;box-shadow:var(--sh)}
+.ov-tab{padding:9px 16px;border-radius:9px;font-size:13.5px}
+.ov-tab.active{background:color-mix(in srgb,var(--green) 15%,transparent);color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent);box-shadow:none;font-weight:600}
+:root[data-theme=light] .ov-tab.active{color:var(--greendark);background:color-mix(in srgb,var(--green) 11%,#fff)}
+.ov-tab.active kbd{color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent)}
+.seg button.on,.hseg button.on{background:color-mix(in srgb,var(--green) 15%,transparent);color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent)}
+:root[data-theme=light] .seg button.on,:root[data-theme=light] .hseg button.on{color:var(--greendark)}
+.seg,.hseg{border-radius:10px}.seg button,.hseg button{border-radius:8px;padding:7px 13px}
+/* tabel */
+.ts{border-radius:14px;overflow:auto}
+table{font-size:13.5px}
+th{padding:13px 14px;font-size:11px;letter-spacing:.06em;background:var(--panel-2)}
+td{padding:11px 14px;border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+tr:nth-child(odd) td{background:transparent}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--panel-2) 45%,transparent)}
+tr.tot td{background:var(--panel-2)!important}
+tbody tr:hover td{background:color-mix(in srgb,var(--green) 7%,var(--panel))!important}
+/* input & tombol */
+input,select,textarea{border-radius:10px;padding:9px 12px;font-size:14px;transition:border-color .15s,box-shadow .15s}
+input::placeholder,textarea::placeholder{color:color-mix(in srgb,var(--muted) 75%,transparent)}
+.btn{background:var(--green);color:#fff;border-radius:10px;padding:10px 18px;font-weight:600;transition:filter .15s,transform .1s}
+:root:not([data-theme=light]) .btn{color:#06241D}
+.btn:hover{filter:brightness(1.08)}.btn:active{transform:translateY(1px)}
+.btn.sec{background:var(--panel-2);color:var(--text)}
+.btn.sec:hover{border-color:var(--green);filter:none}
+.btn.wa{background:#22C55E;color:#fff}
+.btn.del{background:none;color:var(--red)}
+.qchip,.qa-btn{border-radius:10px}
+.qa-btn i{background:color-mix(in srgb,var(--green) 16%,transparent);color:var(--green)}
+:root[data-theme=light] .qa-btn i{color:var(--greendark)}
+/* tag status: kontras lembut */
+.tag{border-radius:8px;padding:3px 10px;font-weight:600}
+.ok{background:color-mix(in srgb,var(--green) 15%,transparent);color:var(--green)}
+.warn{background:color-mix(in srgb,var(--yellow) 18%,transparent);color:var(--yellow)}
+.bad{background:color-mix(in srgb,var(--red) 15%,transparent);color:var(--red)}
+.pos,.dl.up{color:var(--green)}.neg,.dl.down{color:var(--red)}
+/* grafik & peringatan */
+.chartbox{height:300px}
+.xal div{border-radius:12px;background:var(--panel);box-shadow:var(--sh)}
+.xbar{height:8px;border-radius:8px}.xbar i{border-radius:8px}
+.xhm div{border-radius:10px}
+.phead{border-radius:14px;border-left-width:4px;padding:16px 20px}
+.note{line-height:1.55}
+#toast{border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.dr-pop{border-radius:16px}
+.dr-d.st,.dr-d.en{color:#fff}
+/* scrollbar halus */
+*{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--muted) 45%,transparent) transparent}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--muted) 40%,transparent);border-radius:9px}
+:focus-visible{outline:2px solid color-mix(in srgb,var(--green) 70%,transparent);outline-offset:2px}
+@media(max-width:860px){.main{padding:14px}}
+@media print{body{background:#fff}}
+</style>
+<style id="qi-css">
+/* ===== Input Harian (Omzet / Spending / Pengiriman) ===== */
+.qi{display:flex;flex-direction:column;gap:16px}
+.qi-top{display:flex;flex-direction:column;gap:12px}
+.qi-step{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14.5px}
+.qi-step i{font-style:normal;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green);font-size:12.5px;font-weight:800}
+.qi-step .note{font-weight:500}
+.qi-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.qi-row input[type=date]{height:38px}
+.qchip.on{background:color-mix(in srgb,var(--green) 16%,transparent);border-color:var(--green);color:var(--green)}
+.qi-day{font-size:17px;font-weight:700;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.qi-brands{display:flex;gap:8px;flex-wrap:wrap}
+.qi-b{display:inline-flex;align-items:center;gap:8px;background:var(--panel-2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 14px;font-size:13.5px;font-weight:600;cursor:pointer;transition:border-color .15s,background .15s,transform .15s}
+.qi-b:hover{border-color:var(--green);transform:translateY(-1px)}
+.qi-b .qi-bc{font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:999px;background:color-mix(in srgb,var(--yellow) 18%,transparent);color:var(--yellow)}
+.qi-b.done .qi-bc{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green)}
+.qi-b.on{background:color-mix(in srgb,var(--green) 15%,transparent);border-color:var(--green);color:var(--green)}
+.qi-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-top:12px}
+.qi-c{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--sh);transition:border-color .2s}
+.qi-c.saved{border-left-color:var(--green)}.qi-c.dirty{border-left-color:var(--yellow)}
+.qi-c:focus-within{border-color:var(--green);border-left-color:var(--green)}
+.qi-c.flash{animation:qiF .7s ease}@keyframes qiF{0%{background:color-mix(in srgb,var(--green) 22%,var(--panel))}100%{background:var(--panel)}}
+.qi-ch{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:10px}
+.qi-ch b{font-size:15px}
+.qi-st{font-size:11.5px;font-weight:600;color:var(--muted);white-space:nowrap}
+.qi-c.saved .qi-st{color:var(--green)}.qi-c.dirty .qi-st{color:var(--yellow)}
+.qi-fs{display:grid;gap:10px}.qi-fs.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.qi-fs label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:600;color:var(--muted);min-width:0}
+.qi .mny input{font-size:18px!important;padding:9px 12px!important;min-width:0;width:100%}
+.qi-pv{min-height:15px;font-size:12px;color:var(--green);font-weight:600}
+.qi-ft{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.qi-last{background:var(--panel-2);border:1px dashed var(--line);color:var(--muted);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer}
+.qi-last:hover{border-color:var(--green);color:var(--green)}
+.qi-last[hidden],.qi-del[hidden]{display:none}
+.qi-sum{position:sticky;bottom:0;z-index:6;display:flex;gap:22px;align-items:center;flex-wrap:wrap;padding:12px 18px;margin-top:4px;backdrop-filter:blur(6px)}
+.qi-sum b{font-size:16px}.qi-act{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+.qi-hint{font-size:12.5px;color:var(--muted);margin-top:10px}
+@media(max-width:700px){.qi-fs.c3{grid-template-columns:1fr}.qi-act{margin-left:0;width:100%}.qi-act .btn{flex:1}}
+</style>
+<script id="qi-js">
+(()=>{
+const KS=['omzet','spend','kirim'],ST={};KS.forEach(k=>ST[k]={d:iso(new Date()),b:'',all:false});
+let RT3=0;
+const dvOf=p=>pfDiv(p)||mNames('divisi')[0]||'',mid=(d,b,dv,p)=>[d,b,dv,p].join('|').toLowerCase(),rec=(k,id)=>D[k].find(x=>x.id===id);
+const lbl=d=>new Date(d+'T00:00:00').toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),sh=d=>d.slice(8)+'/'+d.slice(5,7);
+const kindOf=el=>{const w=el.closest('[id^="qi-"]');return w?w.id.slice(3):''};
+function pfRows(k,b){const all=mNames('platform').filter(p=>dvOf(p)),lim=addDay(iso(new Date()),-120);
+  const pick=ks=>{const set=new Set();ks.forEach(kk=>D[kk].forEach(x=>{if(same(x.brand,b)&&x.tanggal>=lim)set.add(String(x.platform).toLowerCase())}));return all.filter(p=>set.has(p.toLowerCase()))};
+  let act=pick([k]);if(!act.length)act=pick(KS);const useAll=ST[k].all||!act.length;
+  return{rows:useAll?all:act,more:useAll?0:all.length-act.length,useAll,hasAct:act.length>0}}
+function last(k,b,dv,p){let best=null;D[k].forEach(x=>{if(x.tanggal<ST[k].d&&same(x.brand,b)&&same(x.platform,p)&&same(x.divisi,dv)&&(!best||x.tanggal>best.tanggal))best=x});return best}
+const fv=(k,x)=>k==='kirim'?nf(x.dikirim)+' / '+nf(x.proses)+' / '+nf(x.retur):rp(x[FORMS[k].f[0].k]);
+const fs=(k,a)=>k==='kirim'?'Dikirim '+nf(a[0])+' · Proses '+nf(a[1])+' · Retur '+nf(a[2]):rp(a[0]);
+function stats(k){const d=ST[k].d,o={b:{},sv:0,tt:0};mNames('brand').forEach(b=>{const R=pfRows(k,b),sv=R.rows.filter(p=>rec(k,mid(d,b,dvOf(p),p))).length;o.b[b]={sv,tt:R.rows.length};o.sv+=sv;o.tt+=R.rows.length});return o}
+function sums(k,b){const d=ST[k].d,f=FORMS[k].f,all=f.map(()=>0),br=f.map(()=>0);D[k].forEach(x=>{if(x.tanggal!==d)return;f.forEach((ff,i)=>{const v=+x[ff.k]||0;all[i]+=v;if(same(x.brand,b))br[i]+=v})});return{all,br}}
+function render(k){const el=$('#qi-'+k);if(!el)return;const s=ST[k],c=FORMS[k],brands=mNames('brand');
+  if(!brands.length||!mNames('platform').length){el.innerHTML='<div class="card empty-card"><div class="note">Belum ada brand/platform. Tambahkan dulu di <b>Integrasi → Master</b>.</div></div>';return}
+  s.b=brands.find(x=>same(x,s.b))||brands[0];
+  const td=iso(new Date()),ev=window.evs?evs(s.d):[],R=pfRows(k,s.b),c3=c.f.length>1;
+  const cards=R.rows.map(p=>{const dv=dvOf(p),old=rec(k,mid(s.d,s.b,dv,p)),lr=last(k,s.b,dv,p);
+    return `<div class="qi-c" data-qpf="${esc(p)}" data-qdv="${esc(dv)}"><div class="qi-ch"><div><b>${esc(p)}</b><div class="note">${esc(dv)}</div></div><span class="qi-st"></span></div>
+    <div class="qi-fs${c3?' c3':''}">${c.f.map(f=>`<label><span>${f.l}</span><div class="mny">${f.m?'<span>Rp</span>':''}<input class="qi-in" data-money data-f="${f.k}" inputmode="${f.m?'decimal':'numeric'}" value="${old&&old[f.k]?fmtN(old[f.k]):''}" placeholder="${f.m?'mis. 5jt':'0'}" autocomplete="off"></div>${f.m?'<small class="qi-pv"></small>':''}</label>`).join('')}</div>
+    <div class="qi-ft">${lr?`<button type="button" class="qi-last" data-qk="${k}" data-qprev="1" title="Klik untuk memakai angka ini">↺ ${lr.tanggal===addDay(s.d,-1)?'Kemarin':sh(lr.tanggal)}: ${fv(k,lr)}</button>`:''}<button type="button" class="btn del qi-del" data-qk="${k}" data-qdelrow="1" hidden>Hapus</button></div></div>`}).join('');
+  el.innerHTML=`<div class="qi">
+  <div class="card qi-top"><div class="qi-step"><i>1</i>Pilih tanggal</div>
+    <div class="qi-row"><button type="button" class="sq" data-qk="${k}" data-qshift="-1" title="Hari sebelumnya">‹</button><input type="date" id="q-${k}-d" value="${s.d}"><button type="button" class="sq" data-qk="${k}" data-qshift="1" title="Hari berikutnya">›</button>
+    ${[[0,'Hari ini'],[-1,'Kemarin'],[-2,'2 hari lalu']].map(([n,l])=>`<button type="button" class="qchip${addDay(td,n)===s.d?' on':''}" data-qk="${k}" data-qday="${n}">${l}</button>`).join('')}</div>
+    <div class="qi-day">${esc(lbl(s.d))}${ev.map(e=>`<span class="tag warn">★ ${esc(e)}</span>`).join('')}</div>
+    <div><div class="xbar"><i id="qp-${k}" style="width:0"></i></div><div class="note" id="qpt-${k}"></div></div></div>
+  <div class="card qi-top"><div class="qi-step"><i>2</i>Pilih brand <span class="note">angka di samping nama = baris yang sudah terisi</span></div>
+    <div class="qi-brands">${brands.map(b=>`<button type="button" class="qi-b${same(b,s.b)?' on':''}" data-qk="${k}" data-qbr="${esc(b)}">${esc(b)} <span class="qi-bc"></span></button>`).join('')}</div></div>
+  <div><div class="qi-step"><i>3</i>Isi angka — ${esc(s.b)}</div><div class="qi-cards">${cards}</div>
+    <div class="qi-ft" style="margin-top:12px">${R.more>0?`<button type="button" class="btn sec" data-qk="${k}" data-qall="1">＋ Tampilkan ${R.more} platform lain</button>`:''}${R.useAll&&R.hasAct?`<button type="button" class="btn sec" data-qk="${k}" data-qall="0">Tampilkan platform yang biasa dipakai saja</button>`:''}</div>
+    <div class="qi-hint">💡 Tersimpan otomatis saat pindah kolom (Enter / Tab). Boleh singkat: 500rb, 2,5jt. Tidak ada tombol simpan.</div></div>
+  <div class="card qi-sum"><div><div class="note">Total ${esc(s.b)}</div><b class="qi-sb"></b></div><div><div class="note">Total semua brand · tanggal ini</div><b class="qi-sa"></b></div>
+    <div class="qi-act"><button type="button" class="btn sec" data-qk="${k}" data-qfill="1">↺ Isi yang kosong dari data terakhir</button><button type="button" class="btn" data-qk="${k}" data-qnext="1">Brand berikutnya →</button></div></div></div>`;
+  qUpd(k)}
+function qUpd(k){const el=$('#qi-'+k);if(!el||!el.querySelector('.qi'))return;const s=ST[k],c=FORMS[k],st=stats(k),sm=sums(k,s.b);
+  el.querySelectorAll('.qi-b').forEach(b=>{const x=st.b[b.dataset.qbr]||{sv:0,tt:0};b.querySelector('.qi-bc').textContent=x.sv+'/'+x.tt;b.classList.toggle('done',x.tt>0&&x.sv>=x.tt)});
+  $('#qp-'+k).style.width=(st.tt?st.sv/st.tt*100:0)+'%';$('#qpt-'+k).textContent=st.sv+' dari '+st.tt+' baris terisi'+(st.tt&&st.sv>=st.tt?' ✅ lengkap':'');
+  el.querySelectorAll('.qi-c').forEach(card=>{const p=card.dataset.qpf,dv=card.dataset.qdv,old=rec(k,mid(s.d,s.b,dv,p)),ins=[...card.querySelectorAll('.qi-in')],filled=ins.some(i=>i.value.trim()!==''),eq=old&&c.f.every((f,i)=>(+old[f.k]||0)===parseRp(ins[i].value)),t=old?(eq?'saved':'dirty'):(filled?'dirty':'empty');
+    card.classList.toggle('saved',t==='saved');card.classList.toggle('dirty',t==='dirty');card.querySelector('.qi-st').textContent=t==='saved'?'✓ Tersimpan':t==='dirty'?'● Belum tersimpan':'Belum diisi';
+    card.querySelector('.qi-del').hidden=!old;const lc=card.querySelector('.qi-last');if(lc)lc.hidden=!!old||filled});
+  el.querySelector('.qi-sb').textContent=fs(k,sm.br);el.querySelector('.qi-sa').textContent=fs(k,sm.all)}
+function pv(card){card.querySelectorAll('.qi-fs label').forEach(l=>{const o=l.querySelector('.qi-pv'),i=l.querySelector('.qi-in');if(o){const v=parseRp(i.value);o.textContent=v>0?'= '+rp(v):''}})}
+function later(){clearTimeout(RT3);RT3=setTimeout(()=>{try{renderOverview();renderLists();buildReport()}catch(e){console.error(e)}},500)}
+function commit(k,card){const s=ST[k],c=FORMS[k],p=card.dataset.qpf,dv=card.dataset.qdv,id=mid(s.d,s.b,dv,p),old=rec(k,id),ins=[...card.querySelectorAll('.qi-in')];
+  if(!ins.some(i=>i.value.trim()!==''))return qUpd(k);
+  const o={id,tanggal:s.d,brand:s.b,divisi:dv,platform:p,catatan:old?(old.catatan||''):''};ins.forEach(i=>o[i.dataset.f]=parseRp(i.value));
+  if(old&&c.f.every(f=>(+old[f.k]||0)===(+o[f.k]||0)))return qUpd(k);
+  D[k]=D[k].filter(x=>x.id!==id);D[k].push(o);save();push(k,o);card.classList.remove('flash');void card.offsetWidth;card.classList.add('flash');qUpd(k);later()}
+function fillCard(k,card,x){const c=FORMS[k];card.querySelectorAll('.qi-in').forEach((i,ix)=>{const v=x[c.f[ix].k];i.value=v?fmtN(v):''});pv(card);commit(k,card)}
+function nextBrand(k,focus){const bs=mNames('brand'),i=bs.findIndex(b=>same(b,ST[k].b));if(i<0||i>=bs.length-1){toast('Brand terakhir — selesai ✅');return}ST[k].b=bs[i+1];render(k);if(focus)setTimeout(()=>{const f=$('#qi-'+k+' .qi-in');if(f)f.focus()},40)}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-qk]');if(!t)return;const k=t.dataset.qk,s=ST[k],d=t.dataset,card=t.closest('.qi-c');
+  if(d.qshift!==undefined){s.d=addDay(s.d,+d.qshift);render(k)}
+  else if(d.qday!==undefined){s.d=addDay(iso(new Date()),+d.qday);render(k)}
+  else if(d.qbr!==undefined){s.b=d.qbr;render(k)}
+  else if(d.qall!==undefined){s.all=d.qall==='1';render(k)}
+  else if(d.qnext!==undefined)nextBrand(k,true);
+  else if(d.qfill!==undefined){let n=0;$$('#qi-'+k+' .qi-c').forEach(cd=>{const dv=cd.dataset.qdv,p=cd.dataset.qpf;if(rec(k,mid(s.d,s.b,dv,p))||[...cd.querySelectorAll('.qi-in')].some(i=>i.value.trim()!==''))return;const lr=last(k,s.b,dv,p);if(lr){fillCard(k,cd,lr);n++}});toast(n?n+' baris diisi dari data terakhir — cek lalu ubah bila perlu':'Tidak ada data terakhir untuk disalin')}
+  else if(d.qprev!==undefined&&card){const lr=last(k,s.b,card.dataset.qdv,card.dataset.qpf);if(lr)fillCard(k,card,lr)}
+  else if(d.qdelrow!==undefined&&card){const id=mid(s.d,s.b,card.dataset.qdv,card.dataset.qpf);if(!confirm('Hapus data '+card.dataset.qpf+' — '+s.b+' tanggal '+s.d+'?'))return;D[k]=D[k].filter(x=>x.id!==id);save();push(k,{id,hapus:true});card.querySelectorAll('.qi-in').forEach(i=>i.value='');pv(card);qUpd(k);later();toast('Data dihapus')}});
+document.addEventListener('change',e=>{const t=e.target;if(t.id&&/^q-(omzet|spend|kirim)-d$/.test(t.id)){if(t.value){const k=t.id.split('-')[1];ST[k].d=t.value;render(k)}return}
+  if(t.classList&&t.classList.contains('qi-in')){const card=t.closest('.qi-c');commit(kindOf(card),card)}});
+document.addEventListener('input',e=>{const t=e.target;if(t.classList&&t.classList.contains('qi-in')){const card=t.closest('.qi-c');pv(card);qUpd(kindOf(card))}});
+document.addEventListener('keydown',e=>{const t=e.target;if(!t.classList||!t.classList.contains('qi-in')||!['Enter','ArrowDown','ArrowUp'].includes(e.key))return;e.preventDefault();
+  const k=kindOf(t),all=[...$$('#qi-'+k+' .qi-in')],i=all.indexOf(t),back=e.key==='ArrowUp'||(e.key==='Enter'&&e.shiftKey),n=all[i+(back?-1:1)];
+  if(n){n.focus()}else if(!back){t.blur();nextBrand(k,true)}});
+const ra=window.renderAll;window.renderAll=function(...a){const r=ra.apply(this,a);try{KS.forEach(k=>{const ae=document.activeElement;if(ae&&ae.closest&&ae.closest('#qi-'+k)&&ae.classList.contains('qi-in'))qUpd(k);else render(k)})}catch(e){console.error(e)}return r};
+KS.forEach(k=>{const p=document.querySelector('.tpane[data-tg="'+k+'"][data-ti="0"]');if(p)p.innerHTML='<div id="qi-'+k+'"></div>';const tb=document.querySelector('.ov-tabs[data-tg="'+k+'"] .ov-tab[data-tb="0"]');if(tb)tb.innerHTML='⚡ Input Harian <kbd>1</kbd>';render(k)});
 })();
 </script>
 </body>
