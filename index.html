@@ -99,6 +99,34 @@ th.s{cursor:pointer;user-select:none}th.asc::after{content:' ▲'}th.desc::after
 .tsearch{margin-bottom:8px;width:240px}
 .pb{position:relative;min-width:120px;height:20px;background:var(--panel-2);border-radius:6px;overflow:hidden}.pb i{position:absolute;inset:0 auto 0 0;display:block}.pb span{position:relative;font-size:12px;font-weight:700;padding-left:8px;line-height:20px}
 tr.tot td{font-weight:700;background:var(--panel-2)}
+/* Kinerja Tim: kartu & ringkasan */
+.tkpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:2px 0 14px}
+.tk{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.tk small{display:block;color:var(--muted);font-size:12px;font-weight:600}.tk b{display:block;font-size:20px;margin-top:2px}.tk i{display:block;font-style:normal;color:var(--muted);font-size:11.5px;margin-top:2px}
+.tbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.vseg{display:inline-flex;gap:2px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;padding:3px}
+.vseg button{background:none;border:none;color:var(--muted);font:inherit;font-size:12.5px;font-weight:600;padding:5px 11px;border-radius:6px;cursor:pointer}
+.vseg button.on{background:var(--panel);color:var(--text);box-shadow:0 0 0 1px var(--line)}
+.tctl{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+.tctl select,.tctl input{background:var(--panel-2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:6px 10px;font:inherit;font-size:13px}
+#page-tim:not(.tim-cards) .tctl{display:none}
+#timCards{display:none;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+#page-tim.tim-cards #timCards{display:grid}
+#page-tim.tim-cards .pane{display:none!important}
+.tc{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 15px;cursor:pointer;display:flex;flex-direction:column;gap:10px;transition:border-color .15s,transform .15s}
+.tc:hover{border-color:var(--green);transform:translateY(-2px)}
+.tc:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.tc-h{display:flex;align-items:center;gap:10px}
+.tc-h .av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:13px;flex:none}
+.tc-h b{font-size:15px;line-height:1.2;display:block}.tc-h small{color:var(--muted);font-size:11.5px}
+.tc-h .md{margin-left:auto;font-size:20px}
+.tc-m small{display:block;color:var(--muted);font-size:11.5px}.tc-m b{font-size:20px}
+.tc-t{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:-4px}
+.tc .pb{min-width:0}
+.tc-s{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;border-top:1px solid var(--line);padding-top:9px}
+.tc-s span{font-size:11.5px;color:var(--muted)}.tc-s span b{display:block;font-size:13px;color:var(--text);font-weight:600}
+@media print{.tbar,.tkpi,#timCards{display:none!important}#page-tim.tim-cards .pane{display:block!important}}
+
 details>summary{cursor:pointer}
 td.good{color:var(--green);font-weight:700}td.bad{color:var(--red);font-weight:700}
 .rec{padding:8px 0;border-bottom:1px solid var(--td-border);font-size:13.5px}.rec:last-child{border:none}
@@ -210,8 +238,11 @@ tr.clk{cursor:pointer}tr.clk:hover td{background:rgba(34,197,94,.1)}
     </div>
     <div class="page" id="page-tim">
       <div class="sh"><h1>Kinerja Tim</h1><div class="muted-note" id="timNote"></div></div>
-      <div class="chart-card" style="margin-top:0"><div class="seg"><button class="on" data-p="tAdv">Advertiser</button><button data-p="tPic">PIC Toko</button><button data-p="tAff">PIC Affiliate</button><button data-p="tCs">CS</button><button data-p="tCrm">CRM</button><button data-p="tDl">CS DL</button></div>
-        <div class="table-scroll pane on" id="tAdv"></div><div class="table-scroll pane" id="tPic"></div><div class="table-scroll pane" id="tAff"></div><div class="table-scroll pane" id="tCs"></div><div class="table-scroll pane" id="tCrm"></div><div class="table-scroll pane" id="tDl"></div></div>
+      <div class="chart-card" style="margin-top:0"><div class="seg"><button class="on" data-p="tAdv">Advertiser</button><button data-p="tPic">PIC Toko</button><button data-p="tAff">PIC Affiliate</button><button data-p="tCs">CS</button><button data-p="tCrm">CRM</button><button data-p="tDl">CS DL</button><button data-p="tHl">Host Live</button></div>
+        <div id="timKpi" class="tkpi"></div>
+        <div class="tbar"><div class="vseg" id="timV"><button data-v="k">Kartu</button><button data-v="t">Tabel</button></div><div class="tctl"><select id="timS"><option value="d">Aktual terbesar</option><option value="p">% Tercapai tertinggi</option><option value="a">Nama A–Z</option></select><input id="timQ" type="text" placeholder="Cari nama…"></div></div>
+        <div id="timCards"></div>
+        <div class="table-scroll pane on" id="tAdv"></div><div class="table-scroll pane" id="tPic"></div><div class="table-scroll pane" id="tAff"></div><div class="table-scroll pane" id="tCs"></div><div class="table-scroll pane" id="tCrm"></div><div class="table-scroll pane" id="tDl"></div><div class="table-scroll pane" id="tHl"></div></div>
     </div>
 
     <div class="page" id="page-daily">
@@ -244,7 +275,7 @@ const ls={get:k=>{try{return localStorage.getItem(k)||''}catch(e){return ''}},se
 let TOKEN='';try{TOKEN=sessionStorage.getItem('gtok')||''}catch(e){}
 let CFG={meta:ls.get('g_meta_url'),mp:ls.get('g_mp_url')||DEF_MP};
 let D={meta:{akun:[],leads:[],cs:[],crm:[],csdl:[]},mp:{toko:{},input:[],aff:[],hl:[]}};
-let R=['',''],CH={};D.tgt={mo:{},mpo:{},mps:{},tk:{},aff:{},hl:{},det:{},ts:{},af:{},adv:{}};D.brands=[];let BMAP={};try{BMAP=JSON.parse(ls.get('g_bmap')||'{}')}catch(e){}
+let R=['',''],CH={};D.tgt={mo:{},mpo:{},mps:{},tk:{},aff:{},hl:{},det:{},ts:{},af:{},adv:{},advB:{},hlh:{}};D.brands=[];let BMAP={};try{BMAP=JSON.parse(ls.get('g_bmap')||'{}')}catch(e){}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const rp=n=>isFinite(n)?'Rp '+Math.round(n).toLocaleString('id-ID'):'-';
 const nf=n=>isFinite(n)?Math.round(n).toLocaleString('id-ID'):'-';
@@ -312,6 +343,9 @@ function mapMeta(j){const a=(k)=>Array.isArray(j[k])?j[k]:[];
   D.tgt.adv={};tg.forEach(r=>{const av=String(r.advertiser||'').trim(),m=av.match(/^__OT_ADV__\|(.+)$/i),nm=m?m[1].trim():(/^__/.test(av)?'':av);
     if(!nm||String(r.tipe||'').trim().toLowerCase()!=='omzet_harian')return;const y=parseInt(r.tahun),mo=parseInt(r.bulan),v=num(r.nilai);if(!y||!mo)return;
     const ym2=y+'-'+z(mo),dim2=new Date(y,mo,0).getDate(),sd=parseInt(std)||(dim2>=31?29:28),k=nm.toUpperCase();(D.tgt.adv[ym2]=D.tgt.adv[ym2]||{});if(v>0)D.tgt.adv[ym2][k]=v*sd;else delete D.tgt.adv[ym2][k]});
+  D.tgt.advB={};tg.forEach(r=>{const av=String(r.advertiser||'').trim();if(!av||/^__/.test(av)||String(r.tipe||'').trim().toLowerCase()!=='bulanan')return;
+    const y=parseInt(r.tahun),mo=parseInt(r.bulan),v=num(r.nilai);if(!y||!mo)return;
+    const ym2=y+'-'+z(mo),dim2=new Date(y,mo,0).getDate(),sd=parseInt(std)||(dim2>=31?29:28),k=av.toUpperCase();(D.tgt.advB[ym2]=D.tgt.advB[ym2]||{});if(v>0)D.tgt.advB[ym2][k]=v*sd;else delete D.tgt.advB[ym2][k]});
   D.brands=a('brand').filter(r=>r.nama).map(r=>({name:String(r.nama).trim(),acc:sp(r.akun).map(x=>x.split(':')[0].toLowerCase()),share:Object.fromEntries(sp(r.akun).filter(x=>x.includes(':')).map(x=>{const q=x.split(':');return[q[0].toLowerCase(),parseFloat(q[1])]}))}));
   return D.meta.akun.length+D.meta.leads.length+D.meta.cs.length+D.meta.crm.length+D.meta.csdl.length}
 function mapMP(j){const a=(k)=>Array.isArray(j[k])?j[k]:[];D.mp.toko={};
@@ -327,6 +361,7 @@ D.tgt.aff={};D.tgt.hl={};const af2={},hl2={};
   a('targetAffiliate').forEach(r=>{const ym=String(r.bulan).slice(0,7),id=String(r.tokoId);if(!D.mp.toko[id])return;(af2[id]=af2[id]||{})[ym]={o:num(r.targetomzetafiliasi),k:num(r.targetkomisi),s:num(r.targetsampel)}});
   Object.values(af2).forEach(o=>Object.keys(o).forEach(ym=>{D.tgt.aff[ym]=(D.tgt.aff[ym]||0)+o[ym].o}));D.tgt.af=af2;
   a('targetHostLive').forEach(r=>{const h=String(r.host||'').trim();if(!h)return;(hl2[h]=hl2[h]||{})[String(r.bulan).slice(0,7)]={jam:num(r.targetjam),gmv:num(r.targetgmv)}});
+  D.tgt.hlh=hl2;
   Object.values(hl2).forEach(o=>Object.keys(o).forEach(ym=>{const t=D.tgt.hl[ym]=D.tgt.hl[ym]||{jam:0,gmv:0};t.jam+=o[ym].jam;t.gmv+=o[ym].gmv}));
   D.mp.cnt={hasHl:Array.isArray(j.hostlive),hlRaw:a('hostlive').length,hasThl:Array.isArray(j.targetHostLive),thlRaw:a('targetHostLive').length};
   return D.mp.input.length+D.mp.aff.length+D.mp.hl.length}
@@ -386,7 +421,7 @@ function mkc(id,cfg){if(CH[id])CH[id].destroy();const sc={};
 const plat=p=>({shopee:'Shopee',tiktokshop:'TikTok Shop',tiktok:'TikTok Shop',lazada:'Lazada'}[p]||p);
 
 /* ===== Render ===== */
-function render(){try{render1()}catch(e){console.error(e)}try{render2()}catch(e){console.error(e)}try{renderCek()}catch(e){console.error(e)}$$('.card.kpi').forEach(k=>{const l=k.querySelector('.label').textContent,g=GL.find(x=>x[0].test(l));k.title=(g?g[1]+' — ':'')+'klik untuk rincian'});try{enh();enh2()}catch(e){console.error(e)}}
+function render(){try{render1()}catch(e){console.error(e)}try{render2()}catch(e){console.error(e)}try{renderCek()}catch(e){console.error(e)}$$('.card.kpi').forEach(k=>{const l=k.querySelector('.label').textContent,g=GL.find(x=>x[0].test(l));k.title=(g?g[1]+' — ':'')+'klik untuk rincian'});try{enh();enh2();timUI()}catch(e){console.error(e)}}
 function render1(){
   Chart.defaults.animation=false;Chart.defaults.font.family="'Roboto',sans-serif";Chart.defaults.color=cv('--chart-tick');Chart.defaults.borderColor=cv('--chart-grid');
   const[a,b]=R;if(!a||!b)return;const n=diffD(a,b)+1,[pa,pb]=cmpR(a,b);
@@ -506,6 +541,10 @@ function render2(){
   $('#tCs').innerHTML=ppl('CS','Meta · CS',C.cs,'cs',['Lead Real','Closing','Closing Rate'],rs=>{const lr=sum(rs,'lr'),cl=sum(rs,'closing');return[nf(lr),nf(cl),pc(cl/lr*100)]});
   $('#tCrm').innerHTML=ppl('CRM','Meta · CRM',C.cr,'crm',['Closing','Customer Potensial'],rs=>[nf(sum(rs,'closing')),nf(sum(rs,'pot'))]);
   $('#tDl').innerHTML=ppl('CS DL','Meta · CSDL',C.dl,'cs',['Follow-up','Closing'],rs=>[nf(sum(rs,'fu')),nf(sum(rs,'closing'))]);
+  {const hlh=T.hlh||{},hg={};C.hl.forEach(r=>{const n=(r.host||'(kosong)').trim(),k=n.toLowerCase();(hg[k]=hg[k]||{n,rs:[]}).rs.push(r)});
+   Object.keys(hlh).forEach(h=>{const k=h.toLowerCase();if(!hg[k])hg[k]={n:h,rs:[]}});
+   const hT=n=>{const e=Object.keys(hlh).find(h=>h.toLowerCase()===n.toLowerCase());return(e&&hlh[e][ym])||{jam:0,gmv:0}};
+   $('#tHl').innerHTML=Object.keys(hg).length?tb(['Host Live','Target GMV','Aktual GMV','% Tercapai','% Proyeksi','Target Jam','Aktual Jam','Sesi','Penonton','GMV / Jam'],Object.values(hg).map(o=>[o,hT(o.n),sum(o.rs,'gmv')]).sort((x,y)=>y[2]-x[2]).map(([o,t,g])=>{const jm=sum(o.rs,'jam');return[esc(o.n),t.gmv?rp(t.gmv):'-',rp(g),t.gmv?pbar(g/t.gmv*100,pace):'-',t.gmv?pc(pj(g)/t.gmv*100):'-',t.jam?t.jam.toFixed(1):'-',jm.toFixed(1),nf(o.rs.length),nf(sum(o.rs,'pen')),jm?rp(g/jm):'-']})):'<div class="muted-note" style="padding:6px 2px">'+hlMsg()+'</div>'}
   /* Hero: sesuai target atau belum + porsi sumber */
   const pct=tT?rT/tT*100:0,pjp=tT?pj(rT)/tT*100:0,hc=pct>=pace?'#22C55E':pct>=pace-10?'#F5C518':'#EF4444';
   const share=(t0,a,b)=>{const t=a+b||1;return'<div style="margin-top:12px"><div class="muted-note" style="display:flex;justify-content:space-between"><span>'+t0+' · Meta '+pc(a/t*100)+'</span><span>Marketplace '+pc(b/t*100)+'</span></div><div style="display:flex;height:12px;border-radius:6px;overflow:hidden;margin-top:3px"><i style="width:'+a/t*100+'%;background:#38BDF8"></i><i style="width:'+b/t*100+'%;background:#FF9F6B"></i></div></div>'};
@@ -525,12 +564,12 @@ function render2(){
   R2.sort((x,y)=>x[0]-y[0]);const li=a=>a.map(x=>'<div class="rec">'+x+'</div>').join('');
   $('#ovAlert').innerHTML='<div class="grid g2"><div><div class="panel-title">Perlu Perhatian</div>'+(A.length?li(A):'<div class="muted-note">✅ Tidak ada yang perlu perhatian.</div>')+'</div><div><div class="panel-title">Rekomendasi Tindakan</div>'+(R2.length?li(R2.slice(0,6).map(x=>x[1])):'<div class="muted-note">Belum ada rekomendasi untuk periode ini.</div>')+'</div></div>';
   $('#mAdv').innerHTML=advTable(c);
-  {const A2={},g2=k=>A2[k]=A2[k]||{sp:0,ak:new Set(),re:0,om:0},tga=(T.adv||{})[ym]||{};
-   C.ak.forEach(r=>{const o=g2(advOf(r.nama,r.t));o.sp+=r.spend;if(r.spend>0)o.ak.add(r.nama)});
+  {const A2={},g2=k=>A2[k]=A2[k]||{sp:0,bu:0,ak:new Set(),re:0,om:0},tgb=(T.advB||{})[ym]||{};
+   C.ak.forEach(r=>{const o=g2(advOf(r.nama,r.t));o.sp+=r.spend;o.bu+=r.budget;if(r.spend>0)o.ak.add(r.nama)});
    C.ld.forEach(r=>{g2((r.adv||'(Tanpa advertiser)').toUpperCase()).re+=r.real});
    C.cs.forEach(r=>{g2((r.adv||'(Tanpa advertiser)').toUpperCase()).om+=r.omzet});
-   Object.keys(tga).forEach(k=>g2(k));
-   $('#tAdv').innerHTML=tb(['Advertiser','Target','Aktual','% Tercapai','% Proyeksi','Akun','Spend + PPN','Lead Real','CPL Real','ROAS CS'],Object.entries(A2).map(([k,o])=>[k,o,tga[k]||0]).filter(([k,o,t])=>t||o.sp||o.om||o.re).sort((x,y)=>y[1].om-x[1].om).map(([k,o,t])=>[esc(k),t?rp(t):'<span class="muted-note" title="Target advertiser belum diisi di sheet target">-</span>',rp(o.om),t?pbar(o.om/t*100,pace):'-',t?pc(pj(o.om)/t*100):'-',o.ak.size,rp(o.sp),nf(o.re),rp(o.sp/o.re),rx(o.om/o.sp)]))}
+   Object.keys(tgb).forEach(k=>g2(k));
+   $('#tAdv').innerHTML=tb(['Advertiser','Target Budget','Budget (Non PPN)','% Tercapai','% Proyeksi','Akun','Spend + PPN','Omzet CS','Lead Real','CPL Real','ROAS CS'],Object.entries(A2).map(([k,o])=>[k,o,tgb[k]||0]).filter(([k,o,t])=>t||o.sp||o.om||o.re).sort((x,y)=>y[1].bu-x[1].bu).map(([k,o,t])=>[esc(k),t?rp(t):'-',rp(o.bu),t?pbar(o.bu/t*100,pace):'-',t?pc(pj(o.bu)/t*100):'-',o.ak.size,rp(o.sp),rp(o.om),nf(o.re),rp(o.sp/o.re),rx(o.om/o.sp)]))}
   const dt=window.DR||[],tbd=$('#dT tbody');
   if(dt.length&&tbd){const sp=i=>dt.reduce((x,r)=>x+(r[i]||0),0),ms=sp(1),mo=sp(2),ps=sp(4),po=sp(5),ts=sp(7),to=sp(8),tr=document.createElement('tr');tr.className='tot';
     tr.innerHTML=['TOTAL',rp(ms),rp(mo),rx(mo/ms),rp(ps),rp(po),rx(po/ps),rp(ts),rp(to),rx(to/ts)].map(x=>'<td>'+x+'</td>').join('');
@@ -603,14 +642,14 @@ document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset
 $('#cekClr').onclick=()=>{CEKV={};ls.set(CEK_K,'{}');renderCek()};
 async function loadAll(){if(window.LD)return;window.LD=1;try{await loadAll0()}finally{window.LD=0}}
 function saveCache(){try{localStorage.setItem('g_cache',JSON.stringify({t:Date.now(),D}))}catch(e){}}
-function restoreCache(){try{const c=JSON.parse(ls.get('g_cache')||'null');if(!c||!c.D)return false;D=c.D;D.tgt=Object.assign({mo:{},mpo:{},mps:{},tk:{},aff:{},hl:{},det:{},ts:{},af:{},adv:{}},D.tgt||{});window.LP=new Date(c.t);return true}catch(e){return false}}
+function restoreCache(){try{const c=JSON.parse(ls.get('g_cache')||'null');if(!c||!c.D)return false;D=c.D;D.tgt=Object.assign({mo:{},mpo:{},mps:{},tk:{},aff:{},hl:{},det:{},ts:{},af:{},adv:{},advB:{},hlh:{}},D.tgt||{});window.LP=new Date(c.t);return true}catch(e){return false}}
 function ago(){if(!window.LP)return'-';const m=Math.round((Date.now()-window.LP)/60000);return m<1?'baru saja':m+' menit lalu'}
 function showFresh(){$('#fresh').textContent=(window.FR||'')+' · diperbarui '+ago()}
 setInterval(()=>{if(TOKEN&&!document.hidden)loadAll()},600000);setInterval(()=>{if(window.FR)showFresh()},30000);
 $('#bPrint').onclick=()=>window.print();let _th='';
 window.addEventListener('beforeprint',()=>{_th=document.documentElement.getAttribute('data-theme');if(_th==='dark'){document.documentElement.setAttribute('data-theme','light');render()}});
 window.addEventListener('afterprint',()=>{if(_th==='dark'){document.documentElement.setAttribute('data-theme','dark');render()}});
-const EM={pToko:'toko',tToko:'toko',mAdv:'adv',tAdv:'adv',tCs:'cs',tCrm:'crm',tDl:'csdl'};
+const EM={pToko:'toko',tToko:'toko',mAdv:'adv',tAdv:'adv',tPic:'pic',tAff:'affpic',tHl:'host',tCs:'cs',tCrm:'crm',tDl:'csdl'};
 function enh2(){$$('.table-scroll').forEach(w=>{const t=w.querySelector('table');if(!t)return;
   const ty=EM[w.id];if(ty)[...t.tBodies[0].rows].forEach(r=>{if(r.cells.length>1){r.dataset.ent=ty;r.classList.add('clk');r.title='Klik untuk rincian harian'}});
   if(!['cekT','bMap'].includes(w.id)&&!w.querySelector('.csvb')){const b=document.createElement('button');b.className='btn ghost csvb';b.textContent='Unduh CSV';b.style.cssText='margin-top:8px;padding:5px 10px;font-size:12px';b.onclick=()=>csvOf(w);w.appendChild(b)}})}
@@ -620,20 +659,56 @@ function csvOf(w){const t=w.querySelector('table');if(!t)return;const q=s=>'"'+s
 function drillEnt(ty,nm){const[a,b]=R,days=dayList(a,b),c=calc(a,b),k=nm.toLowerCase(),U=nm.toUpperCase(),ym=b.slice(0,7),T=D.tgt;
   const bm=(v,mx)=>'<div class="pb"><i style="width:'+(mx?Math.min(100,v/mx*100):0)+'%;background:rgba(56,189,248,.45)"></i><span>'+rp(v)+'</span></div>';
   const pick=(arr,f)=>days.map(d=>arr.filter(r=>r.t===d&&f(r)));let ser,H,tg=0;
-  if(ty==='toko'){const ids=Object.keys(D.mp.toko).filter(id=>D.mp.toko[id].nama.toLowerCase()===k);tg=ids.reduce((x,id)=>x+((T.tk[id]||{})[ym]||0),0);
+  if(ty==='affpic'){const ids=Object.keys(D.mp.toko).filter(id=>String(D.mp.toko[id].affpic||'').toLowerCase()===k);tg=ids.reduce((x,id)=>x+((((T.af||{})[id]||{})[ym]||{}).o||0),0);
+    const af=pick(c.af,r=>ids.includes(r.id));
+    ser=days.map((d,i)=>({o:sum(af[i],'omzet'),c:[rp(sum(af[i],'komisi')),nf(sum(af[i],'sampel'))]}));H=['Tanggal','Omzet Affiliate','Komisi','Sampel']}
+  else if(ty==='toko'||ty==='pic'){const ids=Object.keys(D.mp.toko).filter(id=>ty==='pic'?String(D.mp.toko[id].pic||'').toLowerCase()===k:D.mp.toko[id].nama.toLowerCase()===k);tg=ids.reduce((x,id)=>x+((T.tk[id]||{})[ym]||0),0);
     const ip=pick(c.ip,r=>ids.includes(r.id)),af=pick(c.af,r=>ids.includes(r.id));
     ser=days.map((d,i)=>{const o=sum(ip[i],'omzet'),s=sum(ip[i],'spend');return{o,c:[rp(s),rx(o/s),rp(sum(af[i],'omzet'))]}});H=['Tanggal','Omzet','Spending','ROAS','Affiliate']}
-  else if(ty==='adv'){tg=((T.adv||{})[ym]||{})[U]||0;const ak=pick(c.ak,r=>advOf(r.nama,r.t).toUpperCase()===U),ld=pick(c.ld,r=>(r.adv||'').toUpperCase()===U),cs=pick(c.cs,r=>(r.adv||'').toUpperCase()===U);
+  else if(ty==='host'){const hr=pick(c.hl,r=>String(r.host||'').trim().toLowerCase()===k),hk=Object.keys(((T.hlh||{})))
+      .find(h=>h.toLowerCase()===k);tg=hk?((T.hlh[hk][ym]||{}).gmv||0):0;
+    ser=days.map((d,i)=>{const o=sum(hr[i],'gmv'),jm=sum(hr[i],'jam');return{o,c:[jm.toFixed(1),nf(sum(hr[i],'pen')),jm?rp(o/jm):'-']}});H=['Tanggal','GMV','Jam','Penonton','GMV / Jam']}
+  else if(ty==='adv'){tg=((T.advB||{})[ym]||{})[U]||0;const ak=pick(c.ak,r=>advOf(r.nama,r.t).toUpperCase()===U),ld=pick(c.ld,r=>(r.adv||'').toUpperCase()===U),cs=pick(c.cs,r=>(r.adv||'').toUpperCase()===U);
     ser=days.map((d,i)=>{const o=sum(cs[i],'omzet'),s=sum(ak[i],'spend'),re=sum(ld[i],'real');return{o,c:[rp(s),nf(re)+' / '+nf(sum(ld[i],'oo')),rp(s/re),nf(sum(cs[i],'closing'))]}});H=['Tanggal','Omzet CS','Spend','Lead real / OO','CPL','Closing']}
   else{const m2={cs:[c.cs,'cs','Meta · CS'],crm:[c.cr,'crm','Meta · CRM'],csdl:[c.dl,'cs','Meta · CSDL']}[ty],rr=pick(m2[0],r=>(r[m2[1]]||'').toLowerCase()===k);
     tg=((T.det[ym]||[]).filter(x=>x[0]===m2[2]&&x[1].toLowerCase()===k)[0]||[0,0,0])[2];
     ser=days.map((d,i)=>{const x=rr[i];return{o:sum(x,'omzet'),c:[nf(sum(x,'closing')),ty==='cs'?nf(sum(x,'lr')):ty==='crm'?nf(sum(x,'pot')):nf(sum(x,'fu'))]}});
     H=['Tanggal','Omzet','Closing',ty==='cs'?'Lead Real':ty==='crm'?'Customer Potensial':'Follow-up']}
   const mx=Math.max(0,...ser.map(x=>x.o)),tot=ser.reduce((x,y)=>x+y.o,0),act=ser.filter(x=>x.o>0).length;
-  const sub='Total omzet '+rp(tot)+' · '+act+' hari aktif · rata-rata '+rp(act?tot/act:0)+'/hari aktif'+(tg?' · target bulan '+ym+': '+rp(tg):'');
+  const sub=(ty==='host'?'Total GMV ':'Total omzet ')+rp(tot)+' · '+act+' hari aktif · rata-rata '+rp(act?tot/act:0)+'/hari aktif'+(tg?' · target '+(ty==='adv'?'budget ':'')+'bulan '+ym+': '+rp(tg):'');
   $('#dmB').innerHTML='<div style="display:flex;justify-content:space-between;gap:10px"><div><div class="panel-title">'+esc(nm)+'</div><div class="panel-desc">'+a+' s/d '+b+' · '+sub+'</div></div><button class="btn ghost" onclick="$(\'#dm\').style.display=\'none\'">Tutup</button></div><div class="table-scroll ns">'+tb(H,ser.map((x,i)=>[days[i],bm(x.o,mx)].concat(x.c)).reverse())+'</div>';
   $('#dm').style.display='flex'}
 document.addEventListener('click',e=>{const r=e.target.closest('tr[data-ent]');if(!r||e.target.closest('input,button'))return;drillEnt(r.dataset.ent,r.cells[0].textContent.trim())});
+
+let TIMV=ls.get('g_timv')||'k';
+function timUI(){const pg=$('#page-tim');if(!pg)return;const on=pg.querySelector('.seg button.on'),pid=on?on.dataset.p:'tAdv',w=$('#'+pid),t=w&&w.querySelector('table'),box=$('#timCards'),kp=$('#timKpi');
+  pg.classList.toggle('tim-cards',TIMV==='k');$$('#timV button').forEach(b=>b.classList.toggle('on',b.dataset.v===TIMV));box.dataset.p=pid;
+  const r0=t&&t.tBodies[0]&&t.tBodies[0].rows[0];
+  if(!r0||r0.cells.length<2){kp.innerHTML='';box.innerHTML=t?'<div class="muted-note">Belum ada data pada periode ini</div>':(w?w.innerHTML:'');return}
+  const H=[...t.tHead.rows[0].cells].map(c=>c.textContent.trim()),ti=H.findIndex(x=>/^Target/.test(x)),mi=ti+1,pi=H.findIndex(x=>/^% Tercapai/.test(x)),ji=H.findIndex(x=>/^% Proyeksi/.test(x));
+  const nv=x=>{const v=parseFloat(String(x).replace(/Rp|\s/g,'').replace(/\./g,'').replace(',','.'));return isNaN(v)?0:v},
+    pace=parseFloat((($('#timNote').textContent.match(/pace ([\d.]+)/)||[])[1]))||0;
+  const rows=[...t.tBodies[0].rows].filter(r=>!r.classList.contains('tot')&&r.cells.length>1).map(r=>{const c=[...r.cells];return{n:c[0].textContent.trim(),c,t:nv(c[ti].textContent),m:nv(c[mi].textContent),p:pi>=0?parseFloat(c[pi].textContent):NaN}});
+  const sm=rows.reduce((x,r)=>x+r.m,0),st=rows.reduce((x,r)=>x+r.t,0),wt=rows.filter(r=>r.t>0),up=wt.filter(r=>r.p>=pace).length;
+  kp.innerHTML='<div class="tk"><small>Total '+esc(H[mi])+'</small><b>'+rp(sm)+'</b><i>'+rows.length+' baris</i></div>'
+    +'<div class="tk"><small>Total '+esc(H[ti])+'</small><b>'+(st?rp(st):'-')+'</b><i>'+(st?wt.length+' punya target':'Target belum diisi')+'</i></div>'
+    +'<div class="tk"><small>% Tercapai</small><b>'+(st?pc(wt.reduce((x,r)=>x+r.m,0)/st*100):'-')+'</b><i>Pace seharusnya '+pc(pace)+'</i></div>'
+    +'<div class="tk"><small>Di atas pace</small><b>'+(wt.length?up+' / '+wt.length:'-')+'</b><i>dari yang punya target</i></div>';
+  if(TIMV!=='k'){box.innerHTML='';return}
+  const rk=[...rows].sort((a,b)=>b.m-a.m),q=$('#timQ').value.trim().toLowerCase(),so=$('#timS').value;
+  let L=rows.filter(r=>r.n.toLowerCase().includes(q));
+  if(so==='p')L.sort((a,b)=>(isNaN(b.p)?-1:b.p)-(isNaN(a.p)?-1:a.p));else if(so==='a')L.sort((a,b)=>a.n.localeCompare(b.n));else L.sort((a,b)=>b.m-a.m);
+  const md=['🥇','🥈','🥉'],sk=new Set([0,ti,mi,pi,ji]);
+  box.innerHTML=L.length?L.map(r=>{const k=rk.indexOf(r),ini=r.n.replace(/[^A-Za-z0-9 ]/g,'').split(' ').filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'?',hu=[...r.n].reduce((x,ch)=>x+ch.charCodeAt(0),0)*37%360;
+    return'<div class="tc" tabindex="0" data-n="'+esc(r.n)+'"><div class="tc-h"><span class="av" style="background:hsl('+hu+' 45% 42%)">'+esc(ini)+'</span><div><b>'+esc(r.n)+'</b><small>Peringkat '+(k+1)+' dari '+rows.length+'</small></div>'+(rows.length>=3&&k<3&&r.m>0?'<span class="md">'+md[k]+'</span>':'')+'</div>'
+      +'<div class="tc-m"><small>'+esc(H[mi])+'</small><b>'+r.c[mi].innerHTML+'</b></div>'
+      +(r.t>0?'<div class="tc-t"><span>Target '+r.c[ti].innerHTML+'</span><span>'+(ji>=0?'Proyeksi '+r.c[ji].textContent:'')+'</span></div>'+(pi>=0?r.c[pi].innerHTML:''):'<div class="tc-t"><span>Target belum diisi</span></div>')
+      +'<div class="tc-s">'+H.map((h,i)=>sk.has(i)?'':'<span>'+esc(h)+'<b>'+r.c[i].innerHTML+'</b></span>').join('')+'</div></div>'}).join(''):'<div class="muted-note">Tidak ada yang cocok dengan pencarian.</div>'}
+document.addEventListener('click',e=>{const b=e.target.closest('#timV button');if(b){TIMV=b.dataset.v;ls.set('g_timv',TIMV);timUI();return}
+  if(e.target.closest('#page-tim .seg button')){timUI();return}
+  const c=e.target.closest('#timCards .tc');if(c)drillEnt(EM[$('#timCards').dataset.p],c.dataset.n)});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('tc'))e.target.click()});
+$('#timS').onchange=timUI;$('#timQ').oninput=timUI;
 let CL='periode lalu';
 function shM(s,mm){const[y,m,d]=s.split('-').map(Number),f=new Date(y,m-1+mm,1);return ymd(new Date(f.getFullYear(),f.getMonth(),Math.min(d,new Date(f.getFullYear(),f.getMonth()+1,0).getDate())))}
 function cmpR(a,b){const v=$('#cmp').value;CL=v==='pm'?'bulan lalu':v==='py'?'tahun lalu':'periode lalu';
