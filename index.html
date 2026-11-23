@@ -530,7 +530,7 @@ function render2(){
    C.ld.forEach(r=>{g2((r.adv||'(Tanpa advertiser)').toUpperCase()).re+=r.real});
    C.cs.forEach(r=>{g2((r.adv||'(Tanpa advertiser)').toUpperCase()).om+=r.omzet});
    Object.keys(tga).forEach(k=>g2(k));
-   $('#tAdv').innerHTML=tb(['Advertiser','Target','Aktual','% Tercapai','% Proyeksi','Akun','Spend + PPN','Lead Real','CPL Real','ROAS CS'],Object.entries(A2).map(([k,o])=>[k,o,tga[k]||0]).filter(([k,o,t])=>t||o.sp||o.om||o.re).sort((x,y)=>y[1].om-x[1].om).map(([k,o,t])=>[esc(k),rp(t),rp(o.om),t?pbar(o.om/t*100,pace):'-',t?pc(pj(o.om)/t*100):'-',o.ak.size,rp(o.sp),nf(o.re),rp(o.sp/o.re),rx(o.om/o.sp)]))}
+   $('#tAdv').innerHTML=tb(['Advertiser','Target','Aktual','% Tercapai','% Proyeksi','Akun','Spend + PPN','Lead Real','CPL Real','ROAS CS'],Object.entries(A2).map(([k,o])=>[k,o,tga[k]||0]).filter(([k,o,t])=>t||o.sp||o.om||o.re).sort((x,y)=>y[1].om-x[1].om).map(([k,o,t])=>[esc(k),t?rp(t):'<span class="muted-note" title="Target advertiser belum diisi di sheet target">-</span>',rp(o.om),t?pbar(o.om/t*100,pace):'-',t?pc(pj(o.om)/t*100):'-',o.ak.size,rp(o.sp),nf(o.re),rp(o.sp/o.re),rx(o.om/o.sp)]))}
   const dt=window.DR||[],tbd=$('#dT tbody');
   if(dt.length&&tbd){const sp=i=>dt.reduce((x,r)=>x+(r[i]||0),0),ms=sp(1),mo=sp(2),ps=sp(4),po=sp(5),ts=sp(7),to=sp(8),tr=document.createElement('tr');tr.className='tot';
     tr.innerHTML=['TOTAL',rp(ms),rp(mo),rx(mo/ms),rp(ps),rp(po),rx(po/ps),rp(ts),rp(to),rx(to/ts)].map(x=>'<td>'+x+'</td>').join('');
@@ -623,7 +623,7 @@ function drillEnt(ty,nm){const[a,b]=R,days=dayList(a,b),c=calc(a,b),k=nm.toLower
   if(ty==='toko'){const ids=Object.keys(D.mp.toko).filter(id=>D.mp.toko[id].nama.toLowerCase()===k);tg=ids.reduce((x,id)=>x+((T.tk[id]||{})[ym]||0),0);
     const ip=pick(c.ip,r=>ids.includes(r.id)),af=pick(c.af,r=>ids.includes(r.id));
     ser=days.map((d,i)=>{const o=sum(ip[i],'omzet'),s=sum(ip[i],'spend');return{o,c:[rp(s),rx(o/s),rp(sum(af[i],'omzet'))]}});H=['Tanggal','Omzet','Spending','ROAS','Affiliate']}
-  else if(ty==='adv'){const ak=pick(c.ak,r=>advOf(r.nama,r.t).toUpperCase()===U),ld=pick(c.ld,r=>(r.adv||'').toUpperCase()===U),cs=pick(c.cs,r=>(r.adv||'').toUpperCase()===U);
+  else if(ty==='adv'){tg=((T.adv||{})[ym]||{})[U]||0;const ak=pick(c.ak,r=>advOf(r.nama,r.t).toUpperCase()===U),ld=pick(c.ld,r=>(r.adv||'').toUpperCase()===U),cs=pick(c.cs,r=>(r.adv||'').toUpperCase()===U);
     ser=days.map((d,i)=>{const o=sum(cs[i],'omzet'),s=sum(ak[i],'spend'),re=sum(ld[i],'real');return{o,c:[rp(s),nf(re)+' / '+nf(sum(ld[i],'oo')),rp(s/re),nf(sum(cs[i],'closing'))]}});H=['Tanggal','Omzet CS','Spend','Lead real / OO','CPL','Closing']}
   else{const m2={cs:[c.cs,'cs','Meta · CS'],crm:[c.cr,'crm','Meta · CRM'],csdl:[c.dl,'cs','Meta · CSDL']}[ty],rr=pick(m2[0],r=>(r[m2[1]]||'').toLowerCase()===k);
     tg=((T.det[ym]||[]).filter(x=>x[0]===m2[2]&&x[1].toLowerCase()===k)[0]||[0,0,0])[2];
